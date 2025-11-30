@@ -4,7 +4,7 @@
 
 ## اجرای سریع
 ```bash
-python -m http.server 8000
+python dev_server.py --port 8000
 # Automated Persian Lyric Video Generator
 
 This repository provides a fully automated pipeline for generating motion-graphics lyric videos with [Manim](https://www.manim.community/). Supply a Persian lyrics file, a music track, and a background video, then run a single command to produce a synchronized export or a storyboard when Manim is unavailable.
@@ -14,7 +14,7 @@ This repository provides a fully automated pipeline for generating motion-graphi
 ```bash
 python auto_music_video.py --lyrics lyrics.txt --music song.mp3 --video background.mp4
 ```
-سپس در مرورگر به نشانی `http://localhost:8000` بروید.
+سپس در مرورگر به نشانی `http://localhost:8000` بروید. اگر مرورگر شما به‌صورت خودکار تلاش کرد با HTTPS به درگاه ۸۰۰۰ متصل شود و پیام «Bad request version» ظاهر شد، از همین اسکریپت `dev_server.py` استفاده کنید؛ این اسکریپت درخواست‌های TLS اشتباه را تشخیص داده و بدون تولید خطای ۴۰۰، پیام راهنما در لاگ ثبت می‌کند.
 
 ## قابلیت‌های کلیدی
 - الگوهای آماده، اعمال یک‌کلیکی و ذخیرهٔ الگوی شخصی.
