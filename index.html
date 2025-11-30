@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>استودیو موشن گرافیک هوشمند</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <div>
+      <h1>استودیو موشن گرافیک</h1>
+      <p>رابط کاربری دوستانه برای ایجاد و پیش‌نمایش سریع موشن گرافیک حرفه‌ای</p>
+    </div>
+    <div class="status-bar">
+      <div class="memory">استفادهٔ حافظه: <span id="memoryUsage">۱۵٪</span></div>
+      <div class="cloud">رندر ابری: <span id="cloudStatus">آماده</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>الگوهای آماده</h2>
+      <div class="control-grid">
+        <label>انتخاب الگو
+          <select id="templateSelect"></select>
+        </label>
+        <button id="applyTemplate">اعمال با یک کلیک</button>
+      </div>
+      <div class="control-grid">
+        <label>نام الگوی شخصی
+          <input id="customTemplateName" placeholder="مثلاً: استوری رنگارنگ" />
+        </label>
+        <button id="saveTemplate">ذخیره الگوی جدید</button>
+      </div>
+      <p class="note">الگوهای از پیش طراحی‌شده با حرکات نرم و هماهنگی رنگ، مخصوص کاربران مبتدی و حرفه‌ای.</p>
+    </section>
+
+    <section class="panel">
+      <h2>پیش‌نمایش زنده</h2>
+      <div class="preview-wrapper">
+        <div id="preview" class="preview low-quality">
+          <span id="previewLabel">پیش‌نمایش کم‌کیفیت برای سرعت بالاتر</span>
+          <svg viewBox="0 0 600 200" class="path-demo">
+            <path id="textPath" d="M20,120 C180,10 420,200 580,80" fill="transparent" stroke="#ccc" />
+            <text>
+              <textPath href="#textPath" id="pathText">متن روی مسیر منحنی</textPath>
+            </text>
+          </svg>
+          <div id="textSample" class="text-sample">متن سه‌بعدی با گرادیان</div>
+        </div>
+        <div class="timeline">
+          <h3>ویرایش تایم‌لاین صحنه</h3>
+          <div id="timelineTracks"></div>
+          <button id="addScene">افزودن صحنه</button>
+        </div>
+      </div>
+      <div class="control-grid">
+        <button id="toggleQuality">تبدیل به پیش‌نمایش با کیفیت</button>
+        <button id="playAnimation">پیش‌نمایش فوری انیمیشن</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>افکت‌های پیشرفتهٔ متن</h2>
+      <div class="control-grid">
+        <label>قلم خوشنویسی فارسی
+          <select id="calligraphyFont">
+            <option value="IranNastaliq, 'Scheherazade', serif">نستعلیق</option>
+            <option value="'Vazirmatn', 'Tahoma', sans-serif">وزیرمتن</option>
+            <option value="'Shabnam', 'Arial', sans-serif">شبنم</option>
+          </select>
+        </label>
+        <label>گرادیان رنگ
+          <input id="gradientInput" type="color" value="#ff4d79" />
+        </label>
+        <label>چرخش سه‌بعدی
+          <input id="rotateRange" type="range" min="-30" max="30" value="10" />
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>صدا و همگام‌سازی</h2>
+      <div class="control-grid">
+        <label>موسیقی پس‌زمینه
+          <input type="file" id="bgMusic" accept="audio/*" />
+        </label>
+        <label>ضبط/بارگذاری صداگذاری
+          <input type="file" id="voiceOver" accept="audio/*" />
+        </label>
+        <label>همگام‌سازی با تایم‌لاین
+          <input id="voiceOffset" type="range" min="-2" max="2" step="0.1" value="0" />
+        </label>
+      </div>
+      <canvas id="waveform" width="600" height="80" aria-label="نمایش موج صدا"></canvas>
+    </section>
+
+    <section class="panel">
+      <h2>خروجی و بهینه‌سازی</h2>
+      <div class="control-grid">
+        <label>فرمت ویدیو
+          <select id="formatSelect">
+            <option value="mp4">MP4</option>
+            <option value="mov">MOV</option>
+            <option value="webm">WEBM</option>
+          </select>
+        </label>
+        <label>پروفایل شبکه اجتماعی
+          <select id="socialPreset">
+            <option value="instagram">اینستاگرام (۹:۱۶)</option>
+            <option value="youtube">یوتوب (۱۶:۹)</option>
+            <option value="tiktok">تیک‌تاک (۹:۱۶)</option>
+          </select>
+        </label>
+        <label>پردازش دسته‌ای
+          <input id="batchCount" type="number" min="1" max="10" value="3" />
+        </label>
+      </div>
+      <div class="control-grid">
+        <button id="startBatch">شروع پردازش چندگانه</button>
+        <button id="cloudRender">ارسال به رندر ابری</button>
+        <button id="checkCompatibility">بررسی سازگاری فرمت</button>
+      </div>
+      <div id="batchStatus" class="status-list"></div>
+    </section>
+
+    <section class="panel">
+      <h2>پیام‌های راهنما و خطا</h2>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <button id="simulateError">شبیه‌سازی خطا</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
