@@ -26,6 +26,7 @@ const templates = [
 ];
 
 const messages = document.getElementById('messages');
+const clearMessagesBtn = document.getElementById('clearMessages');
 const templateSelect = document.getElementById('templateSelect');
 const textSample = document.getElementById('textSample');
 const gradientInput = document.getElementById('gradientInput');
@@ -51,8 +52,12 @@ function showMessage(text, type = 'info') {
   messages.prepend(div);
 }
 
+function getAllTemplates() {
+  return [...templates, ...userTemplates];
+}
+
 function populateTemplates() {
-  const combined = [...templates, ...userTemplates];
+  const combined = getAllTemplates();
   templateSelect.innerHTML = '';
   combined.forEach((template) => {
     const option = document.createElement('option');
@@ -63,15 +68,14 @@ function populateTemplates() {
 }
 
 function applyTemplate() {
-  const selected = [...templates, ...userTemplates].find(
-    (t) => t.id === templateSelect.value
-  );
+  const selected = getAllTemplates().find((t) => t.id === templateSelect.value);
   if (!selected) return;
 
   textSample.style.backgroundImage = `linear-gradient(90deg, ${selected.color}, #111827)`;
   rotateRange.value = selected.rotate;
   pathText.textContent = selected.pathText;
   textSample.style.transform = `rotateY(${selected.rotate}deg) rotateX(5deg)`;
+  localStorage.setItem('lastUsedTemplate', selected.id);
   showMessage(`الگو «${selected.name}» با موفقیت اعمال شد.`, 'info');
 }
 
@@ -93,6 +97,7 @@ function saveTemplate() {
   localStorage.setItem('userTemplates', JSON.stringify(userTemplates));
   populateTemplates();
   templateSelect.value = id;
+  localStorage.setItem('lastUsedTemplate', id);
   showMessage('الگوی شما ذخیره شد و آمادهٔ استفاده است.', 'info');
 }
 
@@ -194,6 +199,11 @@ function simulateError() {
   showMessage('فونت موردنظر یافت نشد؛ در حال استفاده از جایگزین مناسب.', 'error');
 }
 
+function clearMessages() {
+  messages.innerHTML = '';
+  showMessage('پیام‌ها پاک شدند و می‌توانید دوباره کار را ادامه دهید.', 'info');
+}
+
 function monitorMemory() {
   const usage = Math.round(10 + Math.random() * 20);
   document.getElementById('memoryUsage').textContent = `${usage}٪`;
@@ -216,6 +226,7 @@ function setupEventListeners() {
   document.getElementById('cloudRender').addEventListener('click', sendToCloud);
   document.getElementById('checkCompatibility').addEventListener('click', checkCompatibility);
   document.getElementById('simulateError').addEventListener('click', simulateError);
+  clearMessagesBtn.addEventListener('click', clearMessages);
   document.getElementById('addScene').addEventListener('click', () => {
     scenes.push({ id: Date.now(), name: `صحنه ${scenes.length + 1}`, duration: 5 });
     renderTimeline();
@@ -225,6 +236,15 @@ function setupEventListeners() {
 
 function init() {
   populateTemplates();
+  const savedTemplate = localStorage.getItem('lastUsedTemplate');
+  if (savedTemplate) {
+    const hasTemplate = getAllTemplates().some((t) => t.id === savedTemplate);
+    if (hasTemplate) {
+      templateSelect.value = savedTemplate;
+      applyTemplate();
+      showMessage('آخرین الگوی انتخاب‌شده بازیابی شد.', 'info');
+    }
+  }
   renderTimeline();
   renderWaveform();
   setupEventListeners();

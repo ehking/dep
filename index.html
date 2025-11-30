@@ -127,8 +127,13 @@
 
     <section class="panel">
       <h2>پیام‌های راهنما و خطا</h2>
-      <div id="messages" class="messages" aria-live="polite"></div>
-      <button id="simulateError">شبیه‌سازی خطا</button>
+      <div class="messages-row">
+        <div id="messages" class="messages" aria-live="polite"></div>
+        <div class="message-actions">
+          <button id="clearMessages">پاک کردن پیام‌ها</button>
+          <button id="simulateError">شبیه‌سازی خطا</button>
+        </div>
+      </div>
     </section>
   </main>
 
