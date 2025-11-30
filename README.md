@@ -1,20 +1,21 @@
-# Persian Motion Graphics Creator
+# Automated Persian Lyric Video Generator
 
-A Tkinter-based GUI that wires together Persian text processing, video selection, and Manim Community Edition rendering to create RTL-friendly motion graphics.
+This repository provides a fully automated pipeline for generating motion-graphics lyric videos with [Manim](https://www.manim.community/). Supply a Persian lyrics file, a music track, and a background video, then run a single command to produce a synchronized export or a storyboard when Manim is unavailable.
 
-## Features
-- Persian text entry with automatic RTL reshaping (arabic_reshaper + python-bidi)
-- Font, size, color, and animation selectors with live preview canvas
-- Video background picker with trim and volume controls
-- Timeline controls for text duration and transition styles
-- Export tab for resolution, FPS, and format selection, plus progress feedback
-- Project save/load to JSON for quick iteration
-- Threaded render manager scaffolded for Manim CE scenes
+## Quick start
 
-## Running the app
 ```bash
-pip install manim arabic-reshaper python-bidi
-python app.py
+python auto_music_video.py --lyrics lyrics.txt --music song.mp3 --video background.mp4
 ```
 
-Rendering is invoked asynchronously; the heavy `scene.render()` call is commented for sandbox environments but wired for real projects.
+The script will:
+- Detect Persian lyrics and apply RTL rendering.
+- Analyze the music file to estimate tempo, beats, and energy.
+- Distribute lyrics across the detected beats.
+- Choose animation styles and color palettes automatically.
+- Render a Manim video (or emit a JSON storyboard if Manim is not installed).
+
+## Implementation notes
+- Uses `librosa`/`pydub` for audio analysis when available, with graceful fallbacks.
+- Automatically samples a color palette from the background video when `Pillow` is installed.
+- Exposes a single class, `AutoMusicVideoGenerator`, which wraps the entire automated workflow.
